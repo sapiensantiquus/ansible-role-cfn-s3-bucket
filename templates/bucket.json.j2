@@ -3,13 +3,20 @@
   "Parameters" : {
     "BucketName" : {
       "Type" : "String"
+    },
+    "Versioning" : {
+      "Type" : "String",
+      "AllowedValues" : ["Suspended", "Enabled"]
     }
   },
   "Resources" : {
     "Bucket" : {
       "Type" : "AWS::S3::Bucket",
       "Properties" : {
-        "BucketName" : { "Ref" : "BucketName" }
+        "BucketName" : { "Ref" : "BucketName" },
+        "VersioningConfiguration" :  {
+          "Status" : { "Ref" : "Versioning" }
+        }
       }
     }
   },
