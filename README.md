@@ -8,3 +8,4 @@
 | s3_bucket_template_dir | false     | <strong>s3_build_dir</strong>   |
 | s3_bucket_tags | true | Tags to apply to the bucket |
 | s3_bucket_versioning | false | Not enabled |
+| s3_bucket_description | false | | 
