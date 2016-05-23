@@ -1,5 +1,6 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
+  "Description" : "{{ s3_bucket_description }}",
   "Parameters" : {
     "BucketName" : {
       "Type" : "String"
@@ -13,10 +14,13 @@
     "Bucket" : {
       "Type" : "AWS::S3::Bucket",
       "Properties" : {
-        "BucketName" : { "Ref" : "BucketName" },
+        "BucketName" : { "Ref" : "BucketName" }
+        {% if s3_bucket_use_versioning is defined and s3_bucket_use_versioning == 'yes' %}
+        ,
         "VersioningConfiguration" :  {
           "Status" : { "Ref" : "Versioning" }
         }
+        {% endif %}
       }
     }
   },
