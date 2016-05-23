@@ -6,3 +6,5 @@
 | s3_bucket_stack_name | false | <strong>s3_bucket_name</strong>-stack |
 | s3_bucket_build_dir     | false      |   "build"  |
 | s3_bucket_template_dir | false     | <strong>s3_build_dir</strong>   |
+| s3_bucket_tags | true | Tags to apply to the bucket |
+| s3_bucket_versioning | false | Not enabled |

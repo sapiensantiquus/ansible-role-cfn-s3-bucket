@@ -22,7 +22,7 @@
     region: "{{ s3_bucket_region }}"
     template: "{{ s3_bucket_template_dir }}/bucket.json"
     security_token: "{{ aws_session_token }}"
-    tags: "{{ tags }}"
+    tags: "{{ s3_bucket_tags }}"
   when: aws_session_token is defined
 
 - name: Create bucket stack
@@ -33,5 +33,5 @@
     stack_name: "{{ s3_bucket_stack_name }}"
     region: "{{ s3_bucket_region }}"
     template: "{{ s3_bucket_template_dir }}/bucket.json"
-    tags: "{{ tags }}"
+    tags: "{{ s3_bucket_tags }}"
   when: aws_session_token is not defined
