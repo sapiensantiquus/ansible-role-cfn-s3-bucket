@@ -21,6 +21,59 @@
           "Status" : { "Ref" : "Versioning" }
         }
         {% endif %}
+        {% if s3_bucket_lifecycle_rules is defined %}
+        ,
+        "LifecycleConfiguration" : {
+          "Rules" : [
+            {% for rule in s3_bucket_lifecycle_rules %}
+            {
+              "Status" : "{{ rule.status | default(s3_bucket_lifecycle_rule_status) }}"
+              {% if rule.id is defined %}
+              ,
+              "Id" : "{{ rule.id }}"
+              {% endif %}
+              {% if rule.expiration_in_days is defined %}
+              ,
+              "ExpirationInDays" : "{{ rule.expiration_in_days }}"
+              {% endif %}
+              {% if rule.expiration_date is defined %}
+              ,
+              "ExpirationDate"  : "{{ rule.expiration_date }}"
+              {% endif %}
+              {% if rule.noncurrent_version_expiration_in_days is defined %}
+              ,
+              "NoncurrentVersionExpirationInDays" : "{{ rule.noncurrent_version_expiration_in_days }}"
+              {% endif %}
+              {% if rule.noncurrent_version_transitions is defined %}
+              ,
+              "NoncurrentVersionTransitions" : [
+                {% for transition in rule.noncurrent_version_transitions %}
+                {
+                  "StorageClass" : "{{ transition.storage_class }}",
+                  "TransitionInDays" : "{{ transition.days }}"
+                }
+                {% if not loop.last %},{% endif %}
+                {% endfor %}
+              ]
+              {% endif %}
+              {% if rule.transitions is defined %}
+              ,
+              "Transitions" : [
+                {% for transition in rule.transitions %}
+                {
+                  "StorageClass" : "{{ transition.storage_class }}",
+                  "TransitionInDays" : "{{ transition.days }}"
+                }
+                {% if not loop.last %},{% endif %}
+                {% endfor %}
+              ]
+              {% endif %}
+            }
+            {% if not loop.last %},{% endif %}
+            {% endfor %}
+          ]
+        }
+        {% endif %}
       }
     }
   },
