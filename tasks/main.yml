@@ -19,19 +19,8 @@
       BucketName: "{{ s3_bucket_name }}"
       Versioning: "{{ s3_bucket_versioning }}"
     stack_name: "{{ s3_bucket_stack_name }}"
+    state: "{{ s3_stack_state|default('present') }}"
     region: "{{ s3_bucket_region }}"
     template: "{{ s3_bucket_template_dir }}/bucket.json"
-    security_token: "{{ aws_session_token }}"
+    security_token: "{{ lookup('env','AWS_SESSION_TOKEN')|default(omit, true) }}"
     tags: "{{ s3_bucket_tags }}"
-  when: aws_session_token is defined
-
-- name: Create bucket stack
-  cloudformation:
-    template: "{{ s3_bucket_build_dir }}"
-    template_parameters:
-      BucketName: "{{ s3_bucket_name }}"
-    stack_name: "{{ s3_bucket_stack_name }}"
-    region: "{{ s3_bucket_region }}"
-    template: "{{ s3_bucket_template_dir }}/bucket.json"
-    tags: "{{ s3_bucket_tags }}"
-  when: aws_session_token is not defined
