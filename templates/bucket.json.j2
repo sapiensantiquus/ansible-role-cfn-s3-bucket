@@ -9,6 +9,12 @@
       "Type" : "String",
       "AllowedValues" : ["Suspended", "Enabled"]
     }
+    {% if s3_replication_config is defined %}
+    ,
+    "ReplicationRoleArn" : {
+      "Type" : "String"
+    }
+    {% endif %}
   },
   "Resources" : {
     "Bucket" : {
@@ -19,6 +25,23 @@
         ,
         "VersioningConfiguration" :  {
           "Status" : { "Ref" : "Versioning" }
+        }
+        {% endif %}
+        {% if s3_replication_config is defined %}
+        ,
+        "ReplicationConfiguration" : {
+          "Role" : { "Ref" : "ReplicationRoleArn" },
+          "Rules" : [
+            {% for rule in s3_replication_config %}
+            {
+              {% if rule.id is defined %}"Id" : "{{ rule.id }}",{% endif %}
+              "Destination" : { "Bucket": "{{ rule.dest_bucket }}" },
+              "Prefix" : "{{ rule.prefix|default('') }}",
+              "Status" : "{{ rule.status|default('Enabled') }}"
+            }
+            {% if not loop.last %},{% endif %}
+            {% endfor %}
+          ]
         }
         {% endif %}
         {% if s3_bucket_lifecycle_rules is defined %}
