@@ -4,7 +4,7 @@
   vars:
     s3_bucket_name: "ansible-role-cfn-s3-bucket"
     s3_bucket_region: "us-west-2"
-    bucket_policy: "{{ lookup('file', 'policy.json') }}"
+    s3_bucket_policy: "{{ lookup('file', 'policy.json') }}"
     s3_bucket_tags:
       Name: ansible-role-cfn-s3-bucket-test
   roles:
