@@ -9,16 +9,39 @@
       "Type" : "String",
       "AllowedValues" : ["Suspended", "Enabled"]
     }
+    {% if s3_replication_config is defined %}
+    ,
+    "ReplicationRoleArn" : {
+      "Type" : "String"
+    }
+    {% endif %}
   },
   "Resources" : {
     "Bucket" : {
       "Type" : "AWS::S3::Bucket",
       "Properties" : {
-        "BucketName" : { "Ref" : "BucketName" }
+        {% if s3_bucket_name is defined and s3_bucket_name != '' %}"BucketName" : { "Ref" : "BucketName" }{% endif %}
         {% if s3_bucket_use_versioning is defined and s3_bucket_use_versioning == 'yes' %}
         ,
         "VersioningConfiguration" :  {
           "Status" : { "Ref" : "Versioning" }
+        }
+        {% endif %}
+        {% if s3_replication_config is defined %}
+        ,
+        "ReplicationConfiguration" : {
+          "Role" : { "Ref" : "ReplicationRoleArn" },
+          "Rules" : [
+            {% for rule in s3_replication_config %}
+            {
+              {% if rule.id is defined %}"Id" : "{{ rule.id }}",{% endif %}
+              "Destination" : { "Bucket": "{{ rule.dest_bucket }}" },
+              "Prefix" : "{{ rule.prefix|default('') }}",
+              "Status" : "{{ rule.status|default('Enabled') }}"
+            }
+            {% if not loop.last %},{% endif %}
+            {% endfor %}
+          ]
         }
         {% endif %}
         {% if s3_bucket_lifecycle_rules is defined %}
@@ -76,6 +99,16 @@
         {% endif %}
       }
     }
+    {% if bucket_policy is defined %}
+    ,
+    "BucketPolicy" : {
+      "Type" : "AWS::S3::BucketPolicy",
+      "Properties" : {
+        "Bucket" : { "Ref": "Bucket"},
+        "PolicyDocument" : {{ bucket_policy|to_json }}
+      }
+    }
+    {% endif %}
   },
   "Outputs" : {
     "BucketName" : {

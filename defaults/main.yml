@@ -1,5 +1,4 @@
 s3_bucket_build_dir: "build"
-s3_bucket_template_dir: "{{ s3_bucket_build_dir }}"
 s3_bucket_stack_name: "{{ s3_bucket_name }}-s3-bucket"
 s3_bucket_versioning: "Enabled"
 s3_bucket_description: ""

@@ -1,0 +1,16 @@
+{ 
+  "Statement" : [
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "s3:*"
+      ],
+      "Resource" : { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "Bucket" } , "/*" ]]},
+      "Principal" : {
+            "Service": [
+              "s3.amazonaws.com"
+            ]
+      }
+    }
+  ]
+}
