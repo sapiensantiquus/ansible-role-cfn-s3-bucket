@@ -99,13 +99,13 @@
         {% endif %}
       }
     }
-    {% if bucket_policy is defined %}
+    {% if s3_bucket_policy is defined %}
     ,
     "BucketPolicy" : {
       "Type" : "AWS::S3::BucketPolicy",
       "Properties" : {
         "Bucket" : { "Ref": "Bucket"},
-        "PolicyDocument" : {{ bucket_policy|to_json }}
+        "PolicyDocument" : {{ s3_bucket_policy|to_json }}
       }
     }
     {% endif %}
