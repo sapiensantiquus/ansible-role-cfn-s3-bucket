@@ -99,7 +99,7 @@
         {% endif %}
       }
     }
-    {% if bucket_policy is defined %}
+    {% if s3_bucket_policy is defined %}
     ,
     "BucketPolicy" : {
       "Type" : "AWS::S3::BucketPolicy",
