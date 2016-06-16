@@ -8,13 +8,10 @@
     "Versioning" : {
       "Type" : "String",
       "AllowedValues" : ["Suspended", "Enabled"]
-    }
-    {% if s3_replication_config is defined %}
-    ,
+    },
     "ReplicationRoleArn" : {
       "Type" : "String"
     }
-    {% endif %}
   },
   "Resources" : {
     "Bucket" : {
@@ -27,7 +24,7 @@
           "Status" : { "Ref" : "Versioning" }
         }
         {% endif %}
-        {% if s3_replication_config is defined %}
+        {% if s3_replication_config is defined and s3_replication_config != '' %}
         ,
         "ReplicationConfiguration" : {
           "Role" : { "Ref" : "ReplicationRoleArn" },
