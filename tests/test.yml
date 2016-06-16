@@ -1,0 +1,60 @@
+---
+- name: test build
+  hosts: test
+  vars:
+    s3_bucket_name: "ansible-role-cfn-s3-bucket"
+    s3_bucket_region: "us-west-2"
+    bucket_policy: "{{ lookup('file', 'policy.json') }}"
+    s3_bucket_tags:
+      Name: yost
+  roles:
+    - ansible-role-cfn-s3-bucket
+    - ansible-role-module-cfn-lookup
+  post_tasks:
+    - cfn_lookup:
+        stack_name: "{{s3_bucket_stack_name}}"
+        fact: "cf_output"
+        region: "{{s3_bucket_region}}"
+    - debug: msg="{{ cf_output }}"
+
+- name: test cleanup
+  hosts: test
+  vars:
+    s3_bucket_name: "ansible-role-cfn-s3-bucket"
+    s3_bucket_region: "us-west-2"
+    bucket_policy: "{{ lookup('file', 'policy.json') }}"
+    s3_bucket_tags:
+      Name: yost
+    s3_stack_state: absent
+  roles:
+    - ansible-role-cfn-s3-bucket
+
+- name: test noname build
+  hosts: test
+  vars:
+    s3_bucket_region: "us-west-2"
+    s3_bucket_stack_name: "ansible-role-cfn-s3-bucket"
+    s3_bucket_tags:
+      Name: yost
+  roles:
+    - ansible-role-cfn-s3-bucket
+    - ansible-role-module-cfn-lookup
+  post_tasks:
+    - cfn_lookup:
+        stack_name: "{{s3_bucket_stack_name}}"
+        fact: "cf_output"
+        region: "{{s3_bucket_region}}"
+    - debug: msg="{{ cf_output }}"
+
+
+- name: test noname build cleanup
+  hosts: test
+  vars:
+    s3_bucket_region: "us-west-2"
+    s3_bucket_stack_name: "ansible-role-cfn-s3-bucket"
+    s3_bucket_tags:
+      Name: yost
+    s3_stack_state: absent
+  roles:
+   - ansible-role-cfn-s3-bucket
+

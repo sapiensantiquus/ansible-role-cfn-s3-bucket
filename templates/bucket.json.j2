@@ -20,7 +20,7 @@
     "Bucket" : {
       "Type" : "AWS::S3::Bucket",
       "Properties" : {
-        "BucketName" : { "Ref" : "BucketName" }
+        {% if s3_bucket_name is defined and s3_bucket_name != '' %}"BucketName" : { "Ref" : "BucketName" }{% endif %}
         {% if s3_bucket_use_versioning is defined and s3_bucket_use_versioning == 'yes' %}
         ,
         "VersioningConfiguration" :  {
@@ -99,6 +99,16 @@
         {% endif %}
       }
     }
+    {% if bucket_policy is defined %}
+    ,
+    "BucketPolicy" : {
+      "Type" : "AWS::S3::BucketPolicy",
+      "Properties" : {
+        "Bucket" : { "Ref": "Bucket"},
+        "PolicyDocument" : {{ bucket_policy|to_json }}
+      }
+    }
+    {% endif %}
   },
   "Outputs" : {
     "BucketName" : {

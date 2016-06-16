@@ -3,24 +3,19 @@
     dest: build
     state: directory
 
-- name: Set aws_session_token fact
-  set_fact:
-    aws_session_token: "{{ lookup('env','AWS_SESSION_TOKEN') }}"
-
 - name: Template bucket
   template:
     src: bucket.json.j2
-    dest: "{{ s3_bucket_template_dir }}/bucket.json"
+    dest: "{{ s3_bucket_build_dir }}/bucket.json"
 
-- name: Create bucket stack
+- name: Create or remove bucket stack
   cloudformation:
-    template: "{{ s3_bucket_build_dir }}"
+    template: "{{ s3_bucket_build_dir }}/bucket.json"
     template_parameters:
-      BucketName: "{{ s3_bucket_name }}"
+      BucketName: "{{ s3_bucket_name|default('') }}"
       Versioning: "{{ s3_bucket_versioning }}"
     stack_name: "{{ s3_bucket_stack_name }}"
     state: "{{ s3_stack_state|default('present') }}"
     region: "{{ s3_bucket_region }}"
-    template: "{{ s3_bucket_template_dir }}/bucket.json"
     security_token: "{{ lookup('env','AWS_SESSION_TOKEN')|default(omit, true) }}"
     tags: "{{ s3_bucket_tags }}"
