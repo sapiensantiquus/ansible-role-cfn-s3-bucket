@@ -6,7 +6,7 @@
     s3_bucket_region: "us-west-2"
     bucket_policy: "{{ lookup('file', 'policy.json') }}"
     s3_bucket_tags:
-      Name: yost
+      Name: ansible-role-cfn-s3-bucket-test
   roles:
     - ansible-role-cfn-s3-bucket
     - ansible-role-module-cfn-lookup
@@ -22,9 +22,8 @@
   vars:
     s3_bucket_name: "ansible-role-cfn-s3-bucket"
     s3_bucket_region: "us-west-2"
-    bucket_policy: "{{ lookup('file', 'policy.json') }}"
     s3_bucket_tags:
-      Name: yost
+      Name: ansible-role-cfn-s3-bucket-test
     s3_stack_state: absent
   roles:
     - ansible-role-cfn-s3-bucket
@@ -35,7 +34,7 @@
     s3_bucket_region: "us-west-2"
     s3_bucket_stack_name: "ansible-role-cfn-s3-bucket"
     s3_bucket_tags:
-      Name: yost
+      Name: ansible-role-cfn-s3-bucket-test
   roles:
     - ansible-role-cfn-s3-bucket
     - ansible-role-module-cfn-lookup
@@ -53,7 +52,7 @@
     s3_bucket_region: "us-west-2"
     s3_bucket_stack_name: "ansible-role-cfn-s3-bucket"
     s3_bucket_tags:
-      Name: yost
+      Name: ansible-role-cfn-s3-bucket-test
     s3_stack_state: absent
   roles:
    - ansible-role-cfn-s3-bucket
