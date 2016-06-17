@@ -13,7 +13,7 @@
     template: "{{ s3_bucket_build_dir }}/bucket.json"
     template_parameters:
       BucketName: "{{ s3_bucket_name|default('') }}"
-      Versioning: "{{ s3_bucket_versioning }}"
+      Versioning: "{{ s3_bucket_versioning|default('Enabled') }}"
       ReplicationRoleArn: "{{ s3_role_arn|default('') }}"
     stack_name: "{{ s3_bucket_stack_name }}"
     state: "{{ s3_stack_state|default('present') }}"
