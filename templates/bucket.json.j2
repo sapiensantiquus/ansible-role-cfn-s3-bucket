@@ -17,13 +17,10 @@
     "Bucket" : {
       "Type" : "AWS::S3::Bucket",
       "Properties" : {
-        {% if s3_bucket_name is defined and s3_bucket_name != '' %}"BucketName" : { "Ref" : "BucketName" }{% endif %}
-        {% if s3_bucket_use_versioning is defined and s3_bucket_use_versioning == 'yes' %}
-        ,
+        {% if s3_bucket_name is defined and s3_bucket_name != '' %}"BucketName" : { "Ref" : "BucketName" },{% endif %}
         "VersioningConfiguration" :  {
           "Status" : { "Ref" : "Versioning" }
         }
-        {% endif %}
         {% if s3_replication_config is defined and s3_replication_config != '' %}
         ,
         "ReplicationConfiguration" : {
